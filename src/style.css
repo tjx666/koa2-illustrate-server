@@ -1,0 +1,15 @@
+body {
+    text-align: center;
+}
+
+.title {
+    color: coral
+}
+
+.anime-photo {
+    width: 860px;
+    height: 480px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+

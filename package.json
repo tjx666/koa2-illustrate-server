@@ -1,0 +1,25 @@
+{
+  "name": "browser-cache",
+  "version": "1.0.0",
+  "description": "A koa2 server to display browser cache",
+  "main": "src/index.js",
+  "author": "YuTengjing",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon src/index.js"
+  },
+  "dependencies": {
+    "cross-env": "^5.2.0",
+    "fs-extra": "^8.0.1",
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0",
+    "mime": "^2.4.4",
+    "nodemon": "^1.19.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.3"
+  }
+}
