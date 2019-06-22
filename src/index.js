@@ -22,6 +22,9 @@ router.get(/\S*\.(jpe?g|png)$/, async (ctx, next) => {
     const { response, path } = ctx;
     ctx.type = mime.getType(path);
 
+    response.set('pragma', 'no-cache');
+    // max-age 值是精确到秒，设置过期时间为 1 分钟
+    response.set('cache-control', `max-age=${1 * 60}`);
     // 添加 expires 字段到响应头，过期时间 2 分钟
     response.set('expires', new Date(Date.now() + 2 * 60 * 1000).toString());
 
