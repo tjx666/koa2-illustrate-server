@@ -3,6 +3,7 @@ const Router = require('koa-router');
 const mime = require('mime');
 const fs = require('fs-extra');
 const Path = require('path');
+const crypto = require('crypto');
 
 const app = new Koa();
 const router = new Router();
@@ -22,22 +23,20 @@ router.get(/(^\/index(.html)?$)|(^\/$)/, async (ctx, next) => {
 // 处理图片
 router.get(/\S*\.(jpe?g|png)$/, async (ctx, next) => {
     const { request, response, path } = ctx;
+    ctx.type = mime.getType(path);
     response.set('pragma', 'no-cache');
 
-    // max-age 值是精确到秒，设置过期时间为 1 分钟
-    // response.set('cache-control', `max-age=${1 * 60}`);
-    // 添加 expires 字段到响应头，过期时间 2 分钟
-    // response.set('expires', new Date(Date.now() + 2 * 60 * 1000).toString());
-
+    const ifNoneMatch = request.headers['if-none-match'];
     const imagePath = Path.resolve(__dirname, `.${path}`);
-    const ifModifiedSince = request.headers['if-modified-since'];
-    const imageStatus = await fs.stat(imagePath);
-    const lastModified = imageStatus.mtime.toGMTString();
-    if (ifModifiedSince === lastModified) {
+    const hash = crypto.createHash('md5');
+    const imageBuffer = await fs.readFile(imagePath);
+    hash.update(imageBuffer);
+    const etag = `"${hash.digest('hex')}"`;
+    if (ifNoneMatch === etag) {
         response.status = 304;
     } else {
-        response.lastModified = lastModified;
-        await responseFile(imagePath, ctx);
+        response.set('etag', etag);
+        ctx.body = imageBuffer;
     }
 
     await next();
