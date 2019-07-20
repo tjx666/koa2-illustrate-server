@@ -17,6 +17,7 @@
         "indent": ["error", 4],
         "no-unused-vars": "off",
         "no-console": "off",
-        "no-param-reassign": "off"
+        "no-param-reassign": "off",
+        "quotes": "off"
     }
 }
