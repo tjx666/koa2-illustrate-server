@@ -7,7 +7,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=development nodemon src/index.js"
+    "start": "yarn run 1",
+    "1": "cross-env NODE_ENV=development nodemon src/browser-HTTP-cache/index.js",
+    "2": "cross-env NODE_ENV=development nodemon src/ajax/index.js"
   },
   "dependencies": {
     "cross-env": "^5.2.0",
