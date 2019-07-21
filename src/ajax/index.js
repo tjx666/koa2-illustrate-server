@@ -8,7 +8,11 @@ const server = new Koa();
 const router = new Router();
 
 router.get('/test/get', async (ctx, next) => {
-    ctx.body = `Test GET request success!`;
+    ctx.body = `Test GET request success!
+URL: ${ctx.url}
+queryString: ${ctx.querystring}
+headers: ${JSON.stringify(ctx.headers, null, 2)}    
+`;
     await next();
 });
 
