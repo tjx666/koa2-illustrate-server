@@ -4,6 +4,7 @@ const mime = require('mime');
 const fs = require('fs-extra');
 const Path = require('path');
 const crypto = require('crypto');
+const chalk = require('chalk');
 
 const app = new Koa();
 const router = new Router();
@@ -54,7 +55,12 @@ app
     .use(router.allowedMethods());
 
 
-app.listen(3000);
+const PORT = 1027;
+const HOST = 'localhost';
+const serverURL = `http://${HOST}:${PORT}/`;
+app.listen(PORT, HOST);
+console.log(chalk.yellow('Server is running at:'), chalk.bold.underline.bgBlueBright.gray(serverURL));
+
 process.on('unhandledRejection', (err) => {
     console.error('有 promise 没有 catch', err);
 });
