@@ -4,6 +4,7 @@ const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const cors = require('@koa/cors');
 const chalk = require('chalk');
+const mime = require('mime');
 
 const server = new Koa();
 const router = new Router();
@@ -31,6 +32,31 @@ queryString: ${ctx.querystring}
 headers: ${JSON.stringify(ctx.headers, null, 2)}
 data: ${JSON.stringify(ctx.request.body, null, 2)}
 `;
+});
+
+router.get('/jsonp', async (ctx, next) => {
+    const { query } = ctx;
+    if (query.callback && query.callback === 'get_work_time_list') {
+        ctx.body = `
+        ${query.callback}([
+            {
+                company: 'bytedance',
+                start: '10:30',
+                end: '9:00',
+                days: 5.5
+            },
+            {
+                company: 'pdd',
+                start: '11:00',
+                end: '11:00',
+                days: 6
+            }
+        ])
+        `;
+        ctx.type = mime.getType('.js');
+    }
+
+    await next;
 });
 
 server.use(logger());
